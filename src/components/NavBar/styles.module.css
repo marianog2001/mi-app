@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
+*{
+    font-family: Roboto,sans-serif;
+    color: rgb(228, 249, 245);
+}
+
+.navbar{
+    display: flex;
+    height: 15vh;
+    background-color: rgb(50, 50, 50);
+    align-items: center;
+}
+
+    .navbar ul{
+        list-style: none;
+        display: flex;
+        width: 90%;
+        justify-content: space-evenly;
+        padding: 0 3em;
+    }
+
+        .navbar ul li{
+            font-size: 4vh;
+            font-weight:600;
+        }
+    
+    .carrito{
+        display: flex;
+    }    
+
+.navbar-brand{
+    height: 12vh;
+    fill: rgb(228, 249, 245)
+}
