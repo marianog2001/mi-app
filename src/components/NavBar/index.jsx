@@ -1,10 +1,11 @@
 import styles from './styles.module.css'
 import CartWidget from '../CartWidget'
+import { Link } from 'react-router-dom'
 
 const NavBar = () => {
     return (
         <nav className={styles['navbar']}>
-            <a href="#" >
+            <Link to="/" >
                 <svg className={styles['navbar-brand']} viewBox="0 0 370 85.72734197076181">
                         <defs id="SvgjsDefs1295"></defs>
                         <g id="SvgjsG1296" featurekey="symbolFeature-0"
@@ -251,12 +252,12 @@ const NavBar = () => {
                             </path>
                         </g>
                 </svg>
-            </a>
+            </Link>
             <ul>
-                <li><a href="#">Para ti</a></li>
-                <li><a href="#">Ultimos lanzaminetos</a></li>
-                <li><a href="#">Mas destacado</a></li>
-                <li><a href="#">Categorías</a></li>
+                <li><Link to="#">Lorem</Link></li>
+                <li><Link to="#">Ipsum</Link></li>
+                <li><Link to="#">Dolor</Link></li>
+                <li><Link to="#">Sit</Link></li>
             </ul>
             <CartWidget />
         </nav>
