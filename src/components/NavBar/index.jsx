@@ -256,7 +256,7 @@ const NavBar = () => {
             <ul>
                 <li><Link to="/category/men's%20clothing">Men</Link></li>
                 <li><Link to="/category/women's%20clothing">Women</Link></li>
-                <li><Link to="/category/jewelry">Jewelry</Link></li>
+                <li><Link to="/category/jewelery">Jewelry</Link></li>
                 <li><Link to="/category/electronics">Electronics</Link></li>
             </ul>
             <CartWidget />
