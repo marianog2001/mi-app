@@ -1,69 +1,93 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { useContext } from "react";
+import { CartContext } from "../../context/CartContext";
 import { Link, useParams } from "react-router-dom";
+import { db } from "../../firebase/client";
+import { getDocs, collection, query, where, limit, getDoc, doc } from "firebase/firestore";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function ItemListContainer() {
-  const [data, setData] = useState([]);
-
-  const [carrito, setCarrito] = useState([]);
-
-  const [categorias, setCategorias] = useState([]);
+  
 
   const params = useParams();
 
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((response) => response.json())
-      .then((result) => {
-        setData(result);
-      });
-  }, [params]);
+  const {games} = useContext(CartContext)
 
-  //no es necesario actualizar el fetch de categorías
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products/categories")
-      .then((res) => res.json())
-      .then((categories) => {
-        setCategorias(categories);
-      });
-  }, []);
+  const {cart} = useContext(CartContext)
 
-  function agregarAlCarrito(id) {
-    let itemToAdd = data.find((item) => item.id === id);
-    setCarrito([...carrito, itemToAdd]);
+  const {setCart} = useContext(CartContext)
+
+  const [products,setProducts] = useState([])
+
+  const notify = () => {
+    toast("Added product!",{
+      position: "bottom-right",
+      autoclose: "2000",
+      hideProgressBar: true,
+      theme: "dark"
+    })
+    
+  
+  
   }
 
-  function productRender() {
-    let filteredProducts = [...data];
+  const productsRef = collection(db,"products")
 
-    if (params.category) {
-      filteredProducts = data.filter((element) => {
-        return element.category === params.category;
+  const getProducts = async () => {
+    const data = await getDocs(productsRef)
+    const webData = data.docs.map( (doc) => ({id:doc.id,...doc.data()}) )
+    setProducts(webData)
+  }
+
+  useEffect(() => {
+    getProducts()
+  }, []);
+
+  
+
+  function agregarAlCarrito(id) {
+    let itemToAdd = products.find((item) => item.id === id);
+    setCart([...cart, itemToAdd]);
+  }
+
+
+  function productRender() {
+    let filteredProducts = [...products];
+    if (params.genre) {
+      let targetGenre = params.genre.toLowerCase()
+      filteredProducts = products.filter((element) => {
+        let genres = ((element.genre).split(",")).map(genre => genre.trim().toLowerCase())
+        console.log(genres)
+        return (genres.includes(targetGenre))
       });
     }
 
     return filteredProducts.map((product) => {
       return (
         <div
-          className="flex flex-col self-center justify-center h-3/4"
+          className="flex flex-col self-center justify-center h-3/4 px-5"
           key={product.id}
         >
           <img
-            className="h-4/5 object-contain"
-            src={product.image}
+            className="h-4/5 aspect-video object-cover"
+            src={product.imgUrl}
             alt={product.description}
           />
-          <div className="flex-col ps-10">
+          <div className="flex-col">
             <h3 className="">{product.title}</h3>
             <h4 className="flex-end">${product.price}</h4>
             <div className="flex justify-between">
                 <button
               className="bg-red-500 rounded w-20"
-              onClick={() => agregarAlCarrito(product.id)}
+              onClick={() => {agregarAlCarrito(product.id);
+                notify()}}    //HACER
             >
               <span className="">Buy</span>
             </button>
-            <Link to={`/item/${product.id}`}>
+            <Link to={`/games/game/${product.id}`}>
             <button
               className="bg-red-500 rounded w-20"             
             >
@@ -80,21 +104,7 @@ function ItemListContainer() {
 
   return (
     <div className="mt-5">
-      {/* <h3 className="text-xl">Items del carrito {carrito.length}</h3> */}
-
-    {/* El codigo comentado abajo es la funcion de categorias dinamicas que mudé a la navbar */}
-
-      {/* <div className="flex justify-between px-40 my-2">
-        {categorias.map((category) => {
-          return (
-            <Link to={`/category/${category}`} className="bg-red-500 rounded w-36 h-7 text-center">
-                {category}             
-            </Link>
-          );
-        })}
-      </div> */}
-
-      <div className="bg-neutral-700 mx-5 grid grid-cols-3">
+      <div className="bg-neutral-700 mx-5 grid grid-cols-3 border-2 border-main-red ">
         {productRender()}
       </div>
     </div>
