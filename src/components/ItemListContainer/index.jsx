@@ -83,7 +83,7 @@ function ItemListContainer() {
                 <button
               className="bg-red-500 rounded w-20"
               onClick={() => {agregarAlCarrito(product.id);
-                notify()}}    //HACER
+                notify()}}  
             >
               <span className="">Buy</span>
             </button>

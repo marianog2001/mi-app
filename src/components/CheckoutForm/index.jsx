@@ -2,15 +2,15 @@ import { useContext, useState } from "react"
 import { db } from "../../firebase/client"
 import { addDoc, collection } from "firebase/firestore"
 import { CartContext } from "../../context/CartContext"
+import { toast } from "react-toastify"
+import { Link } from "react-router-dom"
 
 
 
 function CheckoutForm() {
 
     const {cart, totalCart} = useContext(CartContext)
-    
-
-    
+      
 
     const [data, setData] = useState({
 
@@ -42,6 +42,14 @@ function CheckoutForm() {
         
     }
 
+    const notify = () => {
+        toast("Order done! you'll be contacted",{
+          position: "bottom-right",
+          autoclose: "2000",
+          hideProgressBar: true,
+          theme: "dark"
+        })}
+
     return(
         <div className="flex flex-col">
             <h3 className="text-center">Checkout</h3>
@@ -72,7 +80,7 @@ function CheckoutForm() {
                     className="text-black placeholder-gray-500" />
                 </label>
                 <label className="flex justify-center">
-                    <button type="submit" className="rounded bg-main-red text-white hover:text-main-red hover:bg-white w-[90%]">Create order</button>
+                    <Link to={"/"}><button onClick={()=> notify()} type="submit" className="rounded bg-main-red text-white hover:text-main-red hover:bg-white w-[90%]">Create order</button></Link>
                 </label>
             </form>
             
