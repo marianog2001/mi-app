@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 import { db } from "../../firebase/client";
-import { getDocs, collection, query, where, limit, getDoc, doc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 
 function ItemDetailContainer() {
   const params = useParams();
@@ -43,7 +43,6 @@ function ItemDetailContainer() {
           <button onClick={() => setCart([...cart, product])} className="hover:text-white mb-5 pb-5 pe-5 text-4xl underline text-black">Add to cart!</button>
         </div>
         <div>
-
         </div>
       </div>
     </div>
