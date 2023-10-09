@@ -27,7 +27,6 @@ function ItemDetailContainer() {
   return (
     <div>
       {loading ? ( <span className="text-3xl text-center">Loading...</span>  )
-
         : <ItemDetail product={product} />}
     </div>
   );
