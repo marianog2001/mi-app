@@ -1,32 +1,17 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
 import { Link } from "react-router-dom";
+import CartItem from "../CartItem";
 
 function CartView() {
-    const { cart, removeFromCart } = useContext(CartContext);
-
-    console.log(cart)
-
+    const { cart } = useContext(CartContext);
 
     return (
 
         <div className="flex flex-col justify-center mx-5 my-5">
             {cart.length > 0 ? (
                 <div>
-                    {cart.map((game, index) => (
-                        <div className="flex w-full" key={index}>
-                            <div className="flex justify-evenly w-full mx-3">
-                                <div className="w-96 h-50">
-                            <img src={game.imgUrl} alt="" className="bg-main-red px-2.5 object-cover w-full h-auto" />
-                                </div>
-                                    <div className="w-52 bg-main-red flex flex-col justify-center text-3xl items-center px-5" key={index}>
-                                        <h3 className="py-4 text-center">{game.title}</h3>
-                                        <h4 className="text-2xl ">${game.price}</h4>
-                                        <button onClick={()=>removeFromCart(index)} className="mt-2 px-2 text-black rounded-full hover:bg-black hover:text-main-red">X</button>
-                                    </div>
-                            </div>
-                        </div>
-                    ))}
+                    {cart.map((game, index) => (<CartItem game={game} index={index}/>))}
 
                     
                     <div className="my-5 flex w-full justify-center">

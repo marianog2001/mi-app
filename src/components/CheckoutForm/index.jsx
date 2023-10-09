@@ -3,47 +3,50 @@ import { db } from "../../firebase/client"
 import { addDoc, collection } from "firebase/firestore"
 import { CartContext } from "../../context/CartContext"
 import { toast } from "react-toastify"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 
 
 function CheckoutForm() {
 
-    const {cart, totalCart} = useContext(CartContext)
+    const {cart, totalCart, clearCart} = useContext(CartContext)
       
 
     const [data, setData] = useState({
-
         name:'',
         phone:'',
         email:''
     })
 
-    
     const handleChange = (target) => {
         setData({...data,[target.target.name]:target.target.value})
     }
 
-    const createOrder = (e) => {
+    const navigate = useNavigate()    
 
-        e.preventDefault() 
+    const createOrder = async (e) => {
+        e.preventDefault()
+        if (data.name !== "" && data.phone !== "" && data.email !== "" ) {
+            if (!isNaN(data.phone)) {
 
-        const order = {
-            buyer: data,
-            products:cart,
-            total: totalCart()
-        }
-
-        const orderCollection = collection(db ,'orders')
-        console.log(totalCart())
-        
-        addDoc(orderCollection, order)
-        .then(({id}) => console.log(id))
-        
+                if (cart.length>0) {                    
+                    const order = {
+                        buyer: data,
+                        products:cart,
+                        total: totalCart()
+                    }
+                    const orderCollection = collection(db ,'orders')
+                    await addDoc(orderCollection, order)
+                    notify("Your order has been made, we'll contact you soon")
+                    clearCart()
+                    navigate("/")
+                } else {notify("You dont have anything in your cart")}                    
+                } else {notify("Purchase cancelled due to invalid phone number")}              
+        } else {notify("Purchase cancelled due to incomplete fields")}               
     }
 
-    const notify = () => {
-        toast("Order done! you'll be contacted",{
+    const notify = (string) => {
+        toast(string,{
           position: "bottom-right",
           autoclose: "2000",
           hideProgressBar: true,
@@ -64,7 +67,7 @@ function CheckoutForm() {
                     className="text-black placeholder-gray-500" />
                 </label>
                 <label className="py-2.5">
-                    <input type="text"
+                    <input type="tel"
                     name="phone"
                     
                     onChange={(target) => handleChange(target)}
@@ -80,7 +83,7 @@ function CheckoutForm() {
                     className="text-black placeholder-gray-500" />
                 </label>
                 <label className="flex justify-center">
-                    <Link to={"/"}><button onClick={()=> notify()} type="submit" className="rounded bg-main-red text-white hover:text-main-red hover:bg-white w-[90%]">Create order</button></Link>
+                    <button type="submit" className="rounded bg-main-red text-white hover:text-main-red hover:bg-white w-[90%]">Create order</button>
                 </label>
             </form>
             

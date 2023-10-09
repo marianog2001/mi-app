@@ -9,7 +9,7 @@ export const CartContext = createContext()
 // en donde se llame hay que crear una constante que sea igual a useContext(CartContext) y llamara esa const.games
 
 
-export const CartComponentContext = ({children}) => {
+export const CartProvider = ({children}) => {
 
     const [cart, setCart] = useState([])
 

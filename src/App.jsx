@@ -1,10 +1,9 @@
 import NavBar from "./components/NavBar/index.jsx";
 import ItemListContainer from "./components/ItemListContainer";
 import ItemDetailContainer from "./components/ItemDetailContainer";
-import { CartComponentContext } from "./context/CartContext/index.jsx";
+import { CartProvider } from "./context/CartContext/index.jsx";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Home from "./components/Home/index.jsx";
 import GenresButtons from "./components/GenresButtons/index.jsx";
 import CartView from "./components/CartView/index.jsx";
 import {
@@ -20,7 +19,7 @@ import CheckoutForm from "./components/CheckoutForm/index.jsx";
 function App() {
   return (
     <>
-      <CartComponentContext>
+      <CartProvider>
         <NavBar />
         <Routes>
           <Route path="/cart/checkout" element={<CheckoutForm />}></Route>
@@ -40,7 +39,7 @@ function App() {
             }
           ></Route>
 
-          <Route path="/" element={<Home />}></Route>
+          <Route path="/" element={<ItemListContainer />}></Route>
           <Route
             path="/games/genres/:genre"
             element={
@@ -52,7 +51,7 @@ function App() {
           ></Route>
         </Routes>
         <ToastContainer />
-      </CartComponentContext>
+      </CartProvider>
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </>
   );
